@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
     */
 
     /*
-    printf("Image \nRows:%d \tCols:%d \t\nChannels:%d \nDepth:%d \nDims:%d \nSize:%d \n",
+    printf("Image \nRows:%d \tCols:%d \t\nChannels:%d \nPrecision:%d \nDims:%d \nSize:%d \n",
 	   image.rows, image.cols, image.channels(), image.depth(), image.dims, image.size[0]);
     // rows and cols will be -1, if the dims is >2		
     */
