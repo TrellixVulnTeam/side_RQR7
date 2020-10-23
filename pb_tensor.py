@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--input_pb', type=str, 
+parser.add_argument('-i', '--input_pb', type=str, 
                     default='None', help='PB path.')
 parser.add_argument('--tensor_name', type=str, 
                     default='None', help='Tensor name, ex weight')
@@ -38,6 +38,10 @@ def main():
     with pb_graph.as_default():
         with tf.Session(graph=pb_graph, config=config) as sess:
 
+            print('='*10, 'Check out the input placeholders:', '='*10)
+            nodes = [n.name + ' => ' +  n.op for n in sess.graph_def.node if n.op in ('Placeholder')]
+            for node in nodes:
+                print(node)
         # ===Get by Name===
             # _tensor = pb_graph.get_tensor_by_name(args.tensor_name+':0')
             # print(sess.run(_tensor))
@@ -48,7 +52,12 @@ def main():
                 print("-"*100)
                 tensor = sess.run(_tensor)
                 print(tensor)
-
+            # tensor detail
+                # T_shape = _tensor.shape
+                # T_dtype = _tensor.dtype
+                # T_name = _tensor.name
+                # T_op = _tensor.op
+                
 if __name__ == '__main__':
    main()
    # FLAGS, unparsed = parser.parse_known_args()
