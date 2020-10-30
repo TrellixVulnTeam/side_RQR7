@@ -39,11 +39,15 @@ def main():
             tf.import_graph_def(graph_def, name='') # 导入计算图
             tf.summary.FileWriter(args.output_path, graph=tf.get_default_graph())
             print('done.')
+            print("Model Imported. Visualize by running: "
+                  "tensorboard --logdir={}".format(args.output_path))
     if args.input_meta is not None:
         with tf.Graph().as_default() as g, tf.Session():
             tf.train.import_meta_graph(args.input_meta)
             file_writer = tf.summary.FileWriter(logdir=args.output_path, graph=g)
             print('done.')
+            print("Model Imported. Visualize by running: "
+                  "tensorboard --logdir={}".format(args.output_path))
     # After done, tensorboard --logdir=args.output_path
     # visit: http://localhost:6006/
 

@@ -1,14 +1,7 @@
 '''
-Using this code for export the image or video that
-are interpred tensorflow_lite.
+Using this code for pb inference.
 cmd:
-python frame_export.py \
---model 'model path' \
---data_type 'video, image' \
---data_path 'input data path' \
---output_path 'output data path (default is the same as input data)'
-
-model path: '/workspace/tensorflow_lite/tf115/models/PE_SEN_ESPCN_MOBILENET_V2_0.5_MSE_OHEM_F4_320_256_v2_opt_quan8.tflite'
+python /workspace/side/pb_inference_test.py --model /workspace/tpu_rel_v1.2/HP/HP.pb --data_path /workspace/tpu_rel_v1.2/testimgs/hp_03.jpg --output_node 'MobilenetV1_1/yaw/Softmax'
 
 '''
 import tensorflow as tf

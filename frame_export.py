@@ -248,8 +248,8 @@ def Inference_tflite(input_path, input_type, output_path, model_path):
         np.savetxt('/workspace/image2.txt', oneD_array, fmt="%.8f,")
         oneD_array = hms.reshape(-1)
         scale = (oneD_array+1)*255/2 - 127
-        # np.savetxt('/workspace/PE_SEN_opt_tflite_out_img1.txt', oneD_array, fmt="%.8f,")
-        np.savetxt('/workspace/PE_SEN_opt_tflite_float_out_img1.txt', oneD_array, fmt="%5d,")
+        # np.savetxt('/workspace/PE_SEN_opt_tflite_out_img1.txt', oneD_array, fmt="%.8f")
+        np.savetxt('/workspace/PE_SEN_opt_tflite_float_out_img1.txt', oneD_array, fmt="%5d")
         sys.exit(1)
         '''
 

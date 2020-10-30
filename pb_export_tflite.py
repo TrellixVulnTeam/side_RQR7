@@ -22,7 +22,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.python.tools.freeze_graph import freeze_graph
 from tensorflow.python.tools import optimize_for_inference_lib
-from input_pipeline import Pipeline
 import h5py
 import cv2
 
@@ -98,6 +97,11 @@ def main(_):
     converter = tf.lite.TFLiteConverter.from_frozen_graph(pb_path,
                                                           input_arrays,
                                                           output_arrays)
+    # converter = tf.lite.TFLiteConverter.from_frozen_graph(pb_path,
+    #                                                       input_arrays,
+    #                                                       output_arrays,
+    #                                                       input_shapes={"image_tensor":[1,300,300,3]})
+
     # ==== 
     if FLAGS.converter_type == 'float':
         print('======================================')

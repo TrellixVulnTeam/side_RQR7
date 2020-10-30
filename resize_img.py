@@ -48,8 +48,24 @@ def ImgResize():
 		    raise ValueError('!!! Error opening image !!!')
 		frame = cv2.resize(frame, (w, h))
 		# frame_RGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-		resize_frame = cv2.resize(frame, (w, h), interpolation=cv2.INTER_AREA)
-		cv2.imwrite(output_list[i], resize_frame)
+		# resize_frame = cv2.resize(frame, (w, h), interpolation=cv2.INTER_AREA)
+		########################### For FA image
+		# rotation = True
+		# if rotation:
+		#     # frame_ = cv2.resize(frame, (crop_H, crop_W)) # width x height = image_H x image_W = x , y
+		#     frame_ = cv2.flip(frame, 1)
+		#     X = h
+		#     Y = w
+		#     M = cv2.getRotationMatrix2D((X/2 - 1, Y/2 - 1), 90, 1) # Counterclockwise 90
+		#     M[0,2] += (Y - X) / 2 # axis-x shift
+		#     M[1,2] += (X - Y) / 2 # axis-y shift
+		#     frame_ = cv2.warpAffine(frame_, M, (w, h)) # width x height = image_W x image_H
+		#     ## shift and crop
+		#     # SH = np.float32([[1, 0, 0],[0, 1, -480]])
+		#     # frame = cv2.warpAffine(frame, SH, (1080, 1440))
+		#     r_frame = frame_
+		############################
+		cv2.imwrite(output_list[i], frame)
 
 	# width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 	# height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
