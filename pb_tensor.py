@@ -5,9 +5,11 @@ import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input_pb', type=str, 
-                    default='None', help='PB path.')
+                    default=None, help='PB path.')
 parser.add_argument('--tensor_name', type=str, 
-                    default='None', help='Tensor name, ex weight')
+                    default=None, help='Tensor name, ex weight')
+parser.add_argument('--scope_name', type=str, 
+                    default=None, help='Scope name')
 parser.add_argument(
     "--all_tensor_names",
     nargs="?",
@@ -57,17 +59,23 @@ def main():
                 for i in pb_graph.get_operations():
                     print('tensor name: {}\r'.format(i.name))
         # ===Get collection by op that include the tensor_name===
-            tensor_collections = [i.name for i in pb_graph.get_operations() if args.tensor_name in i.name]
-            for x in tensor_collections:
-                _tensor = pb_graph.get_tensor_by_name(x+':0')
-                print("-"*100)
-                tensor = sess.run(_tensor)
-                print(tensor)
-            # tensor detail
-                # T_shape = _tensor.shape
-                # T_dtype = _tensor.dtype
-                # T_name = _tensor.name
-                # T_op = _tensor.op
+            if args.tensor_name is not None:
+                tensor_collections = [i.name for i in pb_graph.get_operations() if args.tensor_name in i.name]
+                for x in tensor_collections:
+                    _tensor = pb_graph.get_tensor_by_name(x+':0')
+                    print("-"*100)
+                    tensor = sess.run(_tensor)
+                    print(tensor.shape)
+                # tensor detail
+                    # T_shape = _tensor.shape
+                    # T_dtype = _tensor.dtype
+                    # T_name = _tensor.name
+                    # T_op = _tensor.op
+        # === Get scope name ===
+            if args.scope_name is not None:
+                tensor_collections = [i.name for i in pb_graph.get_operations() if args.scope_name in i.name]
+                for x in tensor_collections:
+                    print('tensor name: {}\r'.format(x))
                 
 if __name__ == '__main__':
    main()
