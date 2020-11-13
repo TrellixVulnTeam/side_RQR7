@@ -4,12 +4,12 @@ import numpy as np
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--input_ckpt', type=str, 
-                    default='None', help='CKPT path.')
+parser.add_argument("-i", '--input_ckpt', type=str, 
+                    default=None, help='CKPT path.')
 parser.add_argument('--input_meta', type=str, 
-                    default='None', help='meta path.')
+                    default=None, help='meta path.')
 parser.add_argument('--tensor_name', type=str, 
-                    default='None', help='Tensor name, ex fc1/w.')
+                    default=None, help='Tensor name, ex fc1/w.')
 
 args = parser.parse_args()
 
@@ -28,7 +28,7 @@ def main(_):
     # build graph
     graph = tf.Graph
     inputs = tf.placeholder(dtype=tf.float32, shape=[None, 224, 224, 3], name='inputs')
-    net, end_points = vgg.vgg_16(inputs, num_classes=1000)
+    # net, end_points = vgg.vgg_16(inputs, num_classes=1000)
     saver = tf.train.Saver()
 
     saver = tf.train.import_meta_graph(args.input_meta)

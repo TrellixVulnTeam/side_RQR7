@@ -3,13 +3,19 @@ import argparse
 import numpy as np
 import os
 
+'''
+Example: 
+input_ckpt : model.ckpt-300000 
+input_meta : model.ckpt-300000.meta
+'''
+
 parser = argparse.ArgumentParser()
-parser.add_argument('--input_ckpt', type=str, 
-                    default='None', help='CKPT path.')
+parser.add_argument('--input_ckpt', type=str, required=True,
+                    default=None, help='CKPT path.')
 parser.add_argument('--input_meta', type=str, 
-                    default='None', help='meta path.')
+                    default=None, help='meta path.')
 parser.add_argument('--tensor_name', type=str, 
-                    default='None', help='Tensor name, ex fc1/w.')
+                    default=None, help='Tensor name, ex fc1/w.')
 
 args = parser.parse_args()
 
@@ -23,6 +29,10 @@ flags.DEFINE_string(
     )
 FLAGS = flags.FLAGS
 '''
+
+if args.input_meta is None:
+    args.input_meta = args.input_ckpt + '.meta'
+    pass
 
 def main():
 
