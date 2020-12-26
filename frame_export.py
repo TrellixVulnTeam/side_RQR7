@@ -22,7 +22,7 @@ import math
 import time as tt
 import threading
 import timeit
-from input_pipeline import Pipeline
+# from input_pipeline import Pipeline
 import os
 
 flags = tf.app.flags
@@ -33,7 +33,7 @@ flags.DEFINE_string(
 )
 flags.DEFINE_string(
     'data_type',
-    'video',
+    'image',
     'Input Data Type: video, image'
 )
 flags.DEFINE_string(
@@ -414,6 +414,7 @@ def operation_plot(frame, humanmarks, crop_W, crop_H):
     for i, part in enumerate(hm):
         ind = unravel_index(part.argmax(), part.shape) # 找到標注的點（有最大值）
         y, x = ind
+        print('({}, {})'.format(x,y))
         x = int(x * 4 * frame.shape[1] / crop_W)
         y = int(y * 4 * frame.shape[0] / crop_H)
         keypoints.append((x, y))

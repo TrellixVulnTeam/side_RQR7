@@ -63,7 +63,7 @@ def ImgResize():
 		#     ## shift and crop
 		#     # SH = np.float32([[1, 0, 0],[0, 1, -480]])
 		#     # frame = cv2.warpAffine(frame, SH, (1080, 1440))
-		#     r_frame = frame_
+		#     frame = frame_
 		############################
 		cv2.imwrite(output_list[i], frame)
 

@@ -146,7 +146,8 @@ def Inference_pb(input_path, input_type, output_path, model_path):
         cv2.destroyAllWindows()
 
     elif input_type == 'image':
-        frame = pic
+        # frame = pic
+        frame = cv2.resize(pic, (300, 300))
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame_np_expanded = np.expand_dims(frame_rgb, axis=0)
         #=== pb operation ===
@@ -167,15 +168,22 @@ def Inference_pb(input_path, input_type, output_path, model_path):
             tt1 = 0
 
         max_i = np.argmax(scores)
-        box_coord = boxes[0][max_i] * np.array([image_width,image_height,image_width,image_height])
-        x1, y1, x2, y2 = box_coord.astype('int')
+        H,W,_=frame.shape
+        box_coord = boxes[0][max_i] * np.array([H, W, H, W])
+        y1, x1, y2, x2 = box_coord.astype('int')
         # cv2.rectangle(image_live_np,(y1,x1),(y2,x2),(0,255,255),4)
         print("Boxes : {}\n".format(boxes[0][max_i]))
         print("Boxes : (x1,y1): ({},{})\t (x2,y2): ({},{})\n".format(x1,y1,x2,y2))
         print("Scores : {}\n".format(scores))
         # === Image exporting
-        # output_frame = frame[x1:x2, y1:y2]
-        # cv2.imwrite(output_file, output_frame)
+        # Mark the box that score > 0.5
+        boxs_result = [boxes[0][i] for i in range(len(scores[0])) if scores[0][i] >= 0.5]
+        print(boxs_result)
+        # == crop image
+        # output_frame = frame[y1:y2, x1:x2]
+        # == draw image
+        output_frame = drawDetection(pic, boxs_result)
+        cv2.imwrite(output_file, output_frame)
 
         # oneD_array = frame_np_expanded.reshape(-1)
         # np.savetxt(input_path.replace('.jpg', '.txt'), oneD_array, fmt="%.8f")
@@ -191,17 +199,18 @@ def drawDetection(image,result,colors=None,cost=None):
     height,width,c=image.shape
     show=image.copy()
     for item in result:
-        xmin = int(round(item[0] * width))
-        ymin = int(round(item[1] * height))
-        xmax = int(round(item[2] * width))
-        ymax = int(round(item[3] * height))
+        ymin = int(round(item[0] * height))
+        xmin = int(round(item[1] * width))
+        ymax = int(round(item[2] * height))
+        xmax = int(round(item[3] * width))
+        print("Boxes : (x1,y1): ({},{})\t (x2,y2): ({},{}).".format(xmin,ymin,xmax,ymax))
         if colors is None:
-            cv2.putText(show,LABEL_NAME,(xmin,ymin), cv2.FONT_ITALIC,1,(0,0,255))
+            cv2.putText(show,'label',(xmin,ymin), cv2.FONT_ITALIC,1,(0,0,255))
             cv2.rectangle(show,(xmin,ymin),(xmax,ymax),(255,0,0),3)
         else:
             color=colors[int(round(item[4]))]
             color=[c *256 for c in color]
-            cv2.putText(show,LABEL_NAME,(xmin,ymin), cv2.FONT_ITALIC,1,color)
+            cv2.putText(show,'label',(xmin,ymin), cv2.FONT_ITALIC,1,color)
             cv2.rectangle(show,(xmin,ymin),(xmax,ymax),color)
 
     if not cost is None:

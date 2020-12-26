@@ -91,6 +91,7 @@ def Inference_pb(input_path, model_path=None):
         tt1 = 0
 
     features = features[0]
+    np.set_printoptions(suppress=True)
     print(features)
     # === Image exporting
     # output_frame = frame[x1:x2, y1:y2]

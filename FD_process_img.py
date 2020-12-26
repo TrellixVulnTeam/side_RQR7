@@ -82,9 +82,9 @@ def ImgFD():
 		                        feed_dict={i_tensor: frame_np_expanded}) # execution
 
 		max_i = np.argmax(scores)
-		box_coord = boxes[0][max_i] * np.array([image_width,image_height,image_width,image_height])
-		x1, y1, x2, y2 = box_coord.astype('int')
-		output_frame = frame[x1:x2, y1:y2]
+		box_coord = boxes[0][max_i] * np.array([image_height,image_width,image_height,image_width])
+		y1, x1, y2, x2 = box_coord.astype('int')
+		output_frame = frame[y1:y2, x1:x2]
 
 		# frame_RGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 		resize_frame = cv2.resize(output_frame, (w, h), interpolation=cv2.INTER_AREA)

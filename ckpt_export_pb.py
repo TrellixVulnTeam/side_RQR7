@@ -23,7 +23,6 @@ import os
 import tensorflow as tf
 from tensorflow.python.tools.freeze_graph import freeze_graph
 from tensorflow.python.tools import optimize_for_inference_lib
-from input_pipeline import Pipeline
 import h5py
 
 
@@ -220,11 +219,15 @@ def main(_):
             raise ValueError('!!! Output graph is incorrect format. !!!')
         print('Model exporting...')
 
-        save_and_frezze_model(sess,
-                              output_files,
-                              FLAGS.input_node,
-                              FLAGS.output_nodes,
-                              output_path + FLAGS.output_graph)
+        # save_and_frezze_model(sess,
+        #                       output_files,
+        #                       FLAGS.input_node,
+        #                       FLAGS.output_nodes,
+        #                       output_path + FLAGS.output_graph)
+        frozen_graph = tf.graph_util.convert_variables_to_constants(
+            sess, tf.get_default_graph().as_graph_def(), [FLAGS.output_nodes])
+        tf.io.write_graph(frozen_graph, output_path, FLAGS.output_graph, as_text=False)
+
         print('Exporting finished !')
         pass
     except ValueError as e:

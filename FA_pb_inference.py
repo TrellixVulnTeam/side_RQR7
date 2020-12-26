@@ -19,7 +19,7 @@ import os
 flags = tf.app.flags
 flags.DEFINE_string(
     'model',
-    'None',
+    None,
     'Model PATH'
 )
 flags.DEFINE_string(
@@ -29,12 +29,12 @@ flags.DEFINE_string(
 )
 flags.DEFINE_string(
     'data_path',
-    'None',
+    None,
     'Input Data PATH'
 )
 flags.DEFINE_string(
     'output_path',
-    'None',
+    None,
     'Output Data PATH'
 )
 FLAGS = flags.FLAGS
@@ -56,7 +56,7 @@ def Inference_pb(input_path, input_type, output_path, model_path):
     # image_crop_h = 320
     need_rotation = False
 
-    if output_path == 'None':
+    if output_path is None:
         output_path = '/'.join(input_path.split('/')[:-1])
     if not os.path.isdir(output_path):
         os.mkdir(output_path)
@@ -171,6 +171,7 @@ def Inference_pb(input_path, input_type, output_path, model_path):
             c1 = 0
             tt1 = 0
 
+        np.set_printoptions(suppress=True)
         print("Landmark : \n{}\n".format(landmark_tensor))
         print("Landmark shape : {}\n".format(landmark_tensor.shape))
         # === Image exporting
