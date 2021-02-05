@@ -3,7 +3,7 @@ inference model export
  python pb_export_tflite.py \
 --pb_graph 'PE_MOBILENET_V2_0.5_MSE_OHEM_F4_320_256_v2.pb' \
 --input_node=cropped_image \
---output_nodes 'output/BiasAdd' \
+--output_node=output/BiasAdd \
 --converter_type 'int'
 model : the path of ckpt folder, must include 4 files:
     1. checkpoint 

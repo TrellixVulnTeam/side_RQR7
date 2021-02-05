@@ -46,21 +46,6 @@ flags.DEFINE_string(
     'None',
     'Output Data PATH'
 )
-flags.DEFINE_string(
-    'model_type',
-    'MobilePose',
-    'Model architecture in [MobilePose, FPMobilePose, SEMobilePose, sppe]'
-)
-flags.DEFINE_string(
-    'loss_fn',
-    'MSE',
-    'Loss function in [MSE, softmax, center, focal, inv_focal, arcface]'
-)
-flags.DEFINE_boolean(
-    'data_augmentation',
-    False,
-    'Add data augmentation to preprocess'
-)
 flags.DEFINE_integer(
     'number_keypoints',
     17,
@@ -475,13 +460,6 @@ def main(_):
     else:
         print('Model name {} not supported.'.format(model_name))
         return 0
-
-    # pipeline_param = {
-    #     'model_arch': FLAGS.model_type,
-    #     'do_data_augmentation': FLAGS.data_augmentation,
-    #     'loss_fn': FLAGS.loss_fn,
-    #     'number_keypoints': FLAGS.number_keypoints
-    # }
 
     # Inference Execution
     if model_type == 'pb':
