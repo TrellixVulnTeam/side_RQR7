@@ -2,6 +2,7 @@ import tensorflow as tf
 import argparse
 import numpy as np
 import os
+import pathlib
 import cv2
 
 parser = argparse.ArgumentParser()
@@ -22,15 +23,16 @@ output_dir = args.output_dir
 if not output_dir:
     output_dir = args.pb.replace('.pb','_layerout')
 if not os.path.exists(output_dir):
-    os.mkdir(output_dir)
+    os.makedirs(output_dir, mode = 0o777)
     pass
+# pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
 
 '''
 python3 /workspace/side/pb_layer_output.py \
--p ./infer_test/archive/output_6thPruned.pb \
+-p ./infer_test/output_8thPruned_A.pb \
 -j ./infer_test/debug/test.jpg \
--i input -o output/BiasAdd \
---output_dir ./infer_test/debug/6thPruned
+-i input -o SE1/mul,SE2/mul,SE3/mul,SE4/mul,DUC1/Relu,DUC2/Relu \
+--output_dir ./infer_test/debug/8th_A
 '''
 
 CROP_W = 256
@@ -99,6 +101,7 @@ def main():
                 #     cv2.imwrite(output_file, heatmap)
                 #     pass
 
+                # Combine all images into one pic
                 print('{} Saving Merged Img... {}'.format('='*5, '='*5))
                 merge_w = int(np.trunc(np.sqrt(C)))
                 merge_h = int(np.ceil(C / np.trunc(np.sqrt(C))))

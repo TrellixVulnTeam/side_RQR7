@@ -7,6 +7,7 @@ import numpy as np
 import os
 
 '''
+=== Rebuild by meta, and export pb ===
 Example: 
 input_ckpt : model.ckpt-300000 
 input_meta : model.ckpt-300000.meta
@@ -55,8 +56,8 @@ def main(_):
                             name='input')
 
     # load the meta graph
-    saver = tf.train.import_meta_graph(args.input_meta, input_map={'MobilenetV2/input': inputs})
-    # saver = tf.train.import_meta_graph(args.input_meta)
+    # saver = tf.train.import_meta_graph(args.input_meta, input_map={'MobilenetV2/input': inputs})
+    saver = tf.train.import_meta_graph(args.input_meta)
 
     # get graph
     graph = tf.get_default_graph()

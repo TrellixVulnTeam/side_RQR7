@@ -1,4 +1,5 @@
 """
+=== Rebuild model and export pb ===
 inference model export
  python ckpt_export_pb.py \
 --model '/workspace/tensorflow_lite/tf115/models/model.ckpt-975000' \
