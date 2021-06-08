@@ -50,6 +50,8 @@ def main():
                 print(tensor.shape)
                 count = 0
                 prune_filters = []
+
+            # === Calculate the percentage of zero in every layers
                 size = 1
                 for i in tensor.shape:
                     size = i*size
@@ -60,7 +62,8 @@ def main():
                                 if tensor[i,j,k,l] == 0:
                                     count += 1
                 print('Sparsity = {0} \n'.format(count/size))
-                
+            
+            # === Account the zero-filter of layers    
                 # print(x)
                 # if tensor.shape[0] == 3:
                 #     for filter_i in range(tensor.shape[2]):
