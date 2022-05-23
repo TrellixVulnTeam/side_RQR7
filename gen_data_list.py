@@ -11,10 +11,10 @@ import random
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
-  parser.add_argument('dataset', help='dataset dir')
-  parser.add_argument('num', help='data number')
-  parser.add_argument('type', help='data type')
-  parser.add_argument('output', help='data list file')
+  parser.add_argument('--dataset', help='dataset dir')
+  parser.add_argument('--num', help='data number')
+  parser.add_argument('--type', help='data type')
+  parser.add_argument('--output', help='data list file')
   args = parser.parse_args()
 
   full_list = []
