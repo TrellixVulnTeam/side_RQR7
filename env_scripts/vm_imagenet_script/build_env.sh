@@ -82,10 +82,9 @@ curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
 curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 # 2、安装并重启
 sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
-# sudo apt-get install -y nvidia-container-runtime
 sudo systemctl restart docker
 # 3、测试
-docker run --name test1 -it --rm --gpus all ubuntu nvidia-smi
+docker run --name test1 -it --gpus all nvidia/cuda:10.0-base 
 
 # ------------------------------
 
@@ -120,10 +119,3 @@ alias torch17='sudo docker run --gpus all -it --rm --shm-size="1g" --name=gideon
 #--------------------------------
 # pruning package
 pip3 instaall tensorboard prefetch-generator nni
-
-
-#--------------------------------
-#VM nvidia driver
-cd /home/cad
-./NVIDIA-*.run -no-x-check -no-nouveau-check -no-opengl-files 
-.run path /home/cad/Download
