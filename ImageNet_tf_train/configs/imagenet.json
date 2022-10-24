@@ -1,0 +1,22 @@
+{
+"imagenet":{
+    "train_list_path" : "data/train_label.txt",
+    "test_list_path" : "data/validation_label.txt",
+    "train_data_path" : "/dataset/imagenet_gideon/train",
+    "test_data_path" : "/dataset/imagenet_gideon/val",
+    "short_side_scale" : [256, 384],
+    "aspect_ratio_scale" : [0.8, 1.25],
+    "hue_delta" : [-36, 36],
+    "saturation_scale" : [0.6, 1.4],
+    "brightness_scale" : [0.6, 1.4],
+    "pca_std" : 0.1,
+
+    "input_shape" : [224, 224, 3],
+    "mean" : [103.939, 116.779, 123.68],
+    "std" : [58.393, 57.12, 57.375],
+    "eigval" : [55.46, 4.794, 1.148],
+    "eigvec" : [[-0.5836, -0.6948, 0.4203],
+              [-0.5808, -0.0045, -0.8140],
+              [-0.5675, 0.7192, 0.4009]]
+    }
+}

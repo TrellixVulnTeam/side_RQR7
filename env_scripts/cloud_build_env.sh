@@ -1,6 +1,8 @@
 # build_env
 Username = 'gideon.wu'
-sudo apt install python3-pip
+sudo apt-get update
+sudo apt-get -y install python3
+sudo apt install -y python3-pip
 sudo apt install vim
 
 sudo shutdown -h now
@@ -107,11 +109,15 @@ sudo apt-get install \
     lsb-release
 
 # Add Docker’s official GPG key:
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Install Docker Engine
 sudo apt-get update
-sudo apt-get install -y docker.io 
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 systemctl start docker
 systemctl enable docker
 docker version
@@ -133,7 +139,8 @@ dpkg -l | grep -i docker
 
 # Step 2
 sudo apt-get purge -y docker-engine docker docker.io docker-ce docker-ce-cli
-sudo apt-get autoremove -y --purge docker-engine docker docker.io docker-ce  
+sudo apt-get autoremove -y --purge docker-engine docker docker.io docker-ce 
+sudo apt-get remove docker docker-engine docker.io containerd runc
 
 # Step 3
 sudo rm -rf /var/lib/docker /etc/docker
@@ -147,18 +154,46 @@ sudo rm -rf /var/run/docker*
 # ------------------------------
 # docker run --gpu
 # 1、添加源
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+&& curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+&& curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+
 # 2、安装并重启
-sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+# sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+sudo apt-get update && sudo apt-get install -y nvidia-docker2
 # sudo apt-get install -y nvidia-container-runtime
 sudo systemctl restart docker
 # 3、测试
 docker run --name test1 -it --rm --gpus all ubuntu nvidia-smi
 
+
+# ------------------------------
+# Build TF on GPU docker
+# ------------------------------
+docker pull nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04
+docker run --gpus all -it --rm --name=gpu_env -w=/workspace -v /home/ubuntu:/workspace nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04 /bin/bash
+
+apt update
+apt install -y python3-dev python3-pip
+apt install -y git wget libgoogle-glog-dev
+apt install -y libboost-all-dev --fix-missing
+pip3 install pip numpy wheel packaging requests opt_einsum keras_preprocessing 
+
+ln -s /usr/bin/python3 /usr/bin/python 
+
+# Install Bazel
+cd tensorflow_folder
+./configure
+# CUDA: Y
+# https://developer.nvidia.com/cuda-gpus#compute
+# cuda compute capability: ex M60 is 5.2
+# Do you want to use clang as CUDA compiler? [y/N]: N
+bazel build --config=cuda //tensorflow/tools/pip_package:build_pip_package
+./bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tmp/tensorflow_pkg
+
 # ------------------------------
 # Install Sublime On Debian/Ubuntu
+# ------------------------------
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 sudo apt-get install apt-transport-https
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
@@ -166,6 +201,7 @@ sudo apt-get update
 sudo apt-get install sublime-text
 # ------------------------------
 
+# ------------------------------
 # TensorFlow - GPU:
 # python
 from tensorflow.python.client import device_lib
@@ -188,7 +224,7 @@ alias torch17='sudo docker run --gpus all -it --rm --shm-size="1g" --name=gideon
 
 #--------------------------------
 # pruning package
-pip3 instaall tensorboard prefetch-generator nni
+pip3 install tensorboard prefetch-generator nni
 
 
 #--------------------------------

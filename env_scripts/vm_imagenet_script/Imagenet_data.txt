@@ -1,0 +1,39 @@
+Development kit
+https://image-net.org/data/ILSVRC/2012/ILSVRC2012_devkit_t12.tar.gz
+https://image-net.org/data/ILSVRC/2012/ILSVRC2012_devkit_t3.tar.gz
+
+Training
+https://image-net.org/data/ILSVRC/2012/ILSVRC2012_img_train.tar
+MD5: 1d675b47d978889d74fa0da5fadfb00e
+https://image-net.org/data/ILSVRC/2012/ILSVRC2012_img_train_t3.tar
+MD5: ccaf1013018ac1037801578038d370da
+
+Validation
+https://image-net.org/data/ILSVRC/2012/ILSVRC2012_img_val.tar
+MD5: 29b22e2961454d5413ddabcf34fc5622
+
+Test
+https://image-net.org/data/ILSVRC/2012/ILSVRC2012_img_test_v10102019.tar
+MD5: e1b8681fff3d63731c599df9b4b6fc02
+
+
+Train解壓縮
+mkdir train
+tar -xvf ILSVRC2012_img_train.tar -C train
+tar -xvf ILSVRC2012_img_train_t3.tar -C train
+
+for x in "ls train/*tar"; do fn=train/"basename $x .tar"; mkdir $fn; tar -xvf $x -C $fn; rm -f $fn.tar; done
+# or
+cd train; find . -name "*.tar" | while read NAME ; do mkdir -p "${NAME%.tar}"; tar -xvf "${NAME}" -C "${NAME%.tar}"; rm -f "${NAME}"; done
+
+Validation
+mkdir val
+tar -xvf ILSVRC2012_img_val.tar -C val
+bash valprep.sh ./val
+
+# Check total files after extract
+#
+# find train/ -name "*.JPEG" | wc -l
+# 1281167
+# find val/ -name "*.JPEG" | wc -l
+# 50000

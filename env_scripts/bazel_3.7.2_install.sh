@@ -2,6 +2,7 @@
 # tf2.5.0
 # _TF_MIN_BAZEL_VERSION = '3.7.2'
 # _TF_MAX_BAZEL_VERSION = '3.99.0'
+apt update
 apt install -y apt-transport-https curl gnupg
 curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
 mv bazel.gpg /etc/apt/trusted.gpg.d/

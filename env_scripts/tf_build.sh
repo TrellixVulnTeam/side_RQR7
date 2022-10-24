@@ -1,3 +1,9 @@
+apt update
+apt install -y python3-dev python3-pip
+apt install -y git wget libgoogle-glog-dev
+apt-get install -y libboost-all-dev --fix-missing
+pip install pip numpy wheel packaging requests opt_einsum keras_preprocessing 
+
 ln -s /usr/bin/python3 /usr/bin/python
 bazel clean --expunge
 ./configure
